@@ -55,7 +55,7 @@ export default function HabitForm({ userId, initialHabit, onSave, onCancel }: Ha
         data-testid="habit-name-input" 
         value={name} 
         onChange={(e) => setName(e.target.value)} 
-        className="border p-2 rounded-md w-full" 
+        className="border p-2 rounded-md w-full text-gray-400" 
       />
       
       <input 
@@ -64,7 +64,7 @@ export default function HabitForm({ userId, initialHabit, onSave, onCancel }: Ha
         data-testid="habit-description-input" 
         value={description} 
         onChange={(e) => setDescription(e.target.value)} 
-        className="border p-2 rounded-md w-full" 
+        className="border p-2 rounded-md w-full text-gray-400" 
       />
       
       <select 

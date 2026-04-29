@@ -99,7 +99,7 @@ export default function DashboardPage() {
     <div data-testid="dashboard-page" className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-3xl mx-auto">
         <header className="flex justify-between items-center mb-8 bg-white p-4 rounded-lg shadow-sm">
-          <h1 className="text-2xl font-bold">My Habits</h1>
+          <h1 className="text-2xl font-bold text-gray-400">My Habits</h1>
           <button 
             onClick={handleLogout}
             data-testid="auth-logout-button"

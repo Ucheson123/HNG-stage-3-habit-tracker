@@ -21,7 +21,7 @@ export default function HabitList({ habits, today, onToggle, onDelete, onEdit }:
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 text-gray-400">
       {habits.map((habit) => (
         <HabitCard 
           key={habit.id} 
