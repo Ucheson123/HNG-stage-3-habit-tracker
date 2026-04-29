@@ -12,7 +12,7 @@ This application is a local-first, deterministic habit tracker built with Next.j
 - **Testing:** Vitest (Unit), React Testing Library (Integration), Playwright (E2E)
 
 ## Setup & Run Instructions
-1. Clone the repository: `git clone <your-repo-url>`
+1. Clone the repository: `git clone https://github.com/Ucheson123/HNG-stage-3-habit-tracker`
 2. Navigate to the directory: `cd hng-stage-3-habit-tracker`
 3. Install dependencies: `npm install`
 4. Start the development server: `npm run dev`
