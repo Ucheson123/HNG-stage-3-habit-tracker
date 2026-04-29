@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HNG14 Stage 3: Habit Tracker PWA
 
-## Getting Started
+A mobile-first Progressive Web App for tracking daily habits, built to strict TRD specifications.
 
-First, run the development server:
+## Project Overview
+This application is a local-first, deterministic habit tracker built with Next.js App Router, React, TypeScript, and Tailwind CSS. It utilizes `localStorage` for all data persistence to ensure a fast, offline-capable user experience without relying on external databases. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Testing:** Vitest (Unit), React Testing Library (Integration), Playwright (E2E)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup & Run Instructions
+1. Clone the repository: `git clone <your-repo-url>`
+2. Navigate to the directory: `cd hng-stage-3-habit-tracker`
+3. Install dependencies: `npm install`
+4. Start the development server: `npm run dev`
+5. Open `http://localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Test Instructions
+The test suite validates the application against the exact TRD contracts.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Run Unit Tests (with Coverage):** `npm run test:unit`
+- **Run Integration Tests:** `npm run test:integration`
+- **Run End-to-End Tests:** `npm run test:e2e` (Requires `npx playwright install` first)
+- **Run All Tests:** `npm run test`
 
-## Learn More
+## Local Persistence Structure
+Data is stored deterministically in `localStorage` using three exact keys:
+1. `habit-tracker-users`: JSON array of `User` objects (`id`, `email`, `password`, `createdAt`).
+2. `habit-tracker-session`: JSON object of the active `Session` (`userId`, `email`) or `null`.
+3. `habit-tracker-habits`: JSON array of `Habit` objects tracking daily `completions` array.
 
-To learn more about Next.js, take a look at the following resources:
+## PWA Implementation
+The app implements a custom Service Worker (`public/sw.js`) and Web Manifest (`public/manifest.json`). The Service Worker instantly caches the app shell routes (`/`, `/login`, `/signup`, `/dashboard`) on install and intercepts `fetch` requests to serve the cached UI when the device is offline, preventing the default browser crash screen.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Assumptions & Trade-offs
+- **Authentication:** Passwords are stored in plain text in `localStorage` strictly to satisfy the local, deterministic requirements of this specific stage without external services.
+- **Timezones:** Streak calculations assume the user's local browser timezone for the definition of "today" (YYYY-MM-DD).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Test Mapping & Verification
 
-## Deploy on Vercel
+### Unit Tests
+- `tests/unit/slug.test.ts`: Verifies `getHabitSlug` generates lowercase, hyphenated, alphanumeric strings.
+- `tests/unit/validators.test.ts`: Verifies `validateHabitName` rejects empty/long strings and trims valid inputs.
+- `tests/unit/streaks.test.ts`: Verifies `calculateCurrentStreak` accurately counts consecutive days backwards from today and ignores duplicates.
+- `tests/unit/habits.test.ts`: Verifies `toggleHabitCompletion` safely adds/removes dates immutably without duplicates.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Integration Tests
+- `tests/integration/auth-flow.test.tsx`: Verifies signup/login form submissions, duplicate email rejection, and routing behavior.
+- `tests/integration/habit-form.test.tsx`: Verifies habit creation, empty name validation, editing (preserving immutable fields), explicit deletion confirmation, and completion toggling.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### End-to-End Tests
+- `tests/e2e/app.spec.ts`: Verifies the complete user journey in a Chromium browser, including splash screen delays, protected route redirects, habit lifecycle, session persistence across reloads, and offline PWA cache rendering.
